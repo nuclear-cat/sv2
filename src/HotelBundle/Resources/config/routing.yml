@@ -1,0 +1,52 @@
+hotel_homepage:
+    path:     /
+    defaults: { _controller: HotelBundle:Hotel:index }
+
+hotel_contacts:
+    path:     /contacts
+    defaults: { _controller: HotelBundle:Hotel:contacts }
+
+hotel_rooms:
+    path:     /rooms
+    defaults: { _controller: HotelBundle:Hotel:rooms }
+
+hotel_room:
+    path:     /room/{roomId}
+    defaults: { _controller: HotelBundle:Hotel:room }
+
+hotel_room_book:
+    path:     /room_book
+    defaults: { _controller: HotelBundle:Hotel:bookRoom }
+
+hotel_gallery:
+    path:     /gallery
+    defaults: { _controller: HotelBundle:Hotel:gallery }
+
+
+hotel_callback:
+    path:     /callback
+    defaults: { _controller: HotelBundle:Hotel:callBack }
+
+hotel_post:
+    path:     /post/{slug}
+    defaults: { _controller: HotelBundle:Post:post }
+
+hotel_page:
+    path:     /page/{slug}
+    defaults: { _controller: HotelBundle:Post:post }
+
+hotel_posts:
+    path:     /category/{slug}
+    defaults:
+        _controller: HotelBundle:Post:posts
+
+hotel_includes:
+    path:     /includes
+    defaults:
+        _controller: HotelBundle:Post:posts
+        slug: "includes"
+
+hotel_reviews:
+    path:     /reviews
+    defaults:
+        _controller: HotelBundle:Review:reviews

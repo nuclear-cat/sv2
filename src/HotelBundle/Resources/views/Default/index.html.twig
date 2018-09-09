@@ -1,0 +1,212 @@
+{% extends "@Hotel/Default/layout.html.twig" %}
+{% block stylesheet %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset("bundles/hotel/css/mp-slider.css") }}" />
+<link rel="stylesheet" href="{{ asset('bundles/hotel/fancybox/jquery.fancybox.min.css') }}" />
+
+<style media="screen">
+  #mp-rooms-section .slick-arrow:before  { color:#ccc !important; }
+</style>
+{% endblock %}
+{% block content %}
+
+{{ render(controller('HotelBundle\\Controller\\HotelController::bookRoomModalRender', { 'rooms' : rooms })) }}
+
+<section id = 'mp-slider-section'>
+  <div style = 'padding-top:0;' id = "mp-slider">
+    {% if sliderImages %}
+      {% for image in sliderImages %}
+      <div style = "background:url({{ image|thumbnail('big') }});background-repeat:no-repeat;background-position:center;background-size:100%;"></div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <section id = 'mp-order-form-section'>
+    <div class="container">
+      <div class="form-inline">
+        <div class="input-group col-lg-3 col-md-5 ">
+
+          <input id="js-mp-date-from" class="datepicker form-control" placeholder="Дата заезда">
+
+          <div class="input-group-append">
+            <span class="input-group-text"><span class="icon-calendar"></span></span>
+          </div>
+        </div>
+
+        <div class="input-group col-lg-3  col-md-5">
+          <input  id="js-mp-date-to" class="datepicker form-control" placeholder="Дата выезда">
+          <div class="input-group-append">
+            <span class="input-group-text"><span class="icon-calendar"></span></span>
+          </div>
+        </div>
+
+        <div class="input-group col-lg-3  col-md-5">
+          <select id="js-mp-room" class="form-control" >
+            <option value="">Выберите номер</option>
+            {% for k, room in rooms %}
+              <option value="{{ room.id }}">{{ room.title }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group col-lg-3 col-md-5">
+          <button data-room-selector="#js-mp-room" data-date-from-selector="#js-mp-date-from" data-date-to-selector="#js-mp-date-to" data-toggle="modal" data-target="#bookModal" type="submit" class="js-book-button btn btn-primary btn-block">Забронировать</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</section>
+
+{% if rooms | length > 0 %}
+
+
+
+<section id="mp-rooms-section" class = 'bg-1'>
+  <div class="container text-center">
+    <h2>Номера</h2>
+    <div class="row">
+      {% set break = false %}
+      {% set i = 0 %}
+      {% for k, room in rooms if not break %}
+          <div class="mp-room-container col-lg-3 col-md-6 col-sm-12 col-xs-12">
+            <a href="{{ path('hotel_room', { 'roomId' : room.id }) }}">
+              <div class="room-item">
+                {% if room.images | length > 0 %}
+                {% set image = room.images.0.image %}
+                <div class="room-item-image"style = "background:url({{ image|thumbnail('preview') }}) no-repeat; {{ image.width > image.height ? 'background-size:auto 100% ;background-position:center;' : 'background-size:100% auto;' }}) "></div>
+                {% else %}
+                <div class="room-item-image" style="background:url({{ asset('bundles/hotel/images/placeholder.png') }}) no-repeat; background-position: center; background-size:auto 100%;"></div>
+                {% endif %}
+                <h5>{{ room.title }}</h5>
+
+
+
+
+                {% if room.priceFrom > 0 or room.priceTo > 0 %}
+
+                {% if discount > 0 %}
+                <div class="mp-room-price-container old">
+                    <s>
+                      {% if room.priceFrom == room.priceTo %}
+                        {{ discount > 0 ? room.priceFrom : "" }}
+                      {% else %}
+                        {{ room.priceFrom > 0 ? "от " ~ room.priceFrom: "" }}
+                        {{ room.priceTo > 0 ? "до " ~ room.priceTo: "" }}
+                      {% endif %}
+                      руб.
+                    </s>
+                </div>
+                {% endif %}
+
+                <div class="mp-room-price-container">
+                      {% if room.priceFrom == room.priceTo %}
+                        {{ discount > 0 ? (discount > 0 ? ((room.priceFrom - (room.priceFrom / 100 * discount))  | round) : room.priceFrom) : room.priceFrom }}
+                      {% else %}
+                        {{ room.priceFrom > 0 ? "от " ~ (discount > 0 ? (room.priceFrom - (room.priceFrom / 100 * discount)) : room.priceFrom) | round: "" }}
+                        {{ room.priceTo > 0 ? "до " ~ (discount > 0 ? (room.priceTo - (room.priceTo / 100 * discount)) : room.priceTo) | round: "" }}
+                      {% endif %}
+                    руб.
+                </div>
+
+                {% endif %}
+
+
+
+
+
+              </div>
+            </a>
+        </div>
+        {% set i = i + 1 %}
+        {% set break = i >= 4 ? true : false %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+
+
+{% if posts | length > 0 %}
+<section id = "mp-description-section" >
+  <div class="container">
+    <h2 class = 'text-center'>Оздоровительный коплекс</h2>
+    <div class="row">
+        {% for post in posts %}
+        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+          <div class="include-item">
+              <a href="{{ path('hotel_post', { 'slug': post.slug } ) }}">
+                <div class="include-item-image" style = "background:url({{ post.images | length > 0 ? post.images.0.image | thumbnail('preview') : asset('bundles/hotel/images/placeholder.png') }}) no-repeat; background-size: 100% auto; background-position:center;">
+                  <div class="include-item-image-border">
+                      <div class="title">{{ post.title }}</div>
+                  </div>
+                </div>
+              </a>
+          </div>
+        </div>
+        {% endfor %}
+
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class = 'bg-1' id = "mp-panorama">
+    <div class="container">
+        <h2 class = 'text-center'>3D тур по гостинице</h2>
+        <iframe allowfullscreen="allowfullscreen" id="tour_iframe" style="width:100%;" height="400" src="{{ asset('uploads/3D/sv/sv_otel biysk.html') }}" width="100%"></iframe>
+    </div>
+</section>
+
+{% if images | length > 0 %}
+<section id="mp-gallery-section" >
+  <div class="container text-center">
+    <h2><a href="{{ path('hotel_gallery') }}">Галлерея</a></h2>
+    <div id="mp-carousel-slider">
+      {% for image in images %}
+        <a href="{{ image|thumbnail('big') }}" data-fancybox="gallery" >
+            <div class = 'slider-item' style = 'background:url({{ image|thumbnail('preview') }}) no-repeat; {{ image.width > image.height ? 'background-size:auto 100% ; background-position:center;' : 'background-size:100% auto;' }} height:150px;'></div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+
+<section class = 'bg-white' id = "mp-map-section">
+  <div class="container">
+    <div class = 'row'>
+      <div class="col-md-6 col-sm-12 col-xs-12">
+        <ul class="list-group list-group-flush mb-10" >
+          <li class="list-group-item"><span class="icon-location"></span> г. Бийск, Советская, 212/2</li>
+          <li class="list-group-item"><span class="icon-phone"></span> <a href="#">+7 (3854) 36–48–36</a></li>
+          <li class="list-group-item"><span class="icon-envelop"></span> <a href="#">sv-hotel@inbox.ru</a></li>
+          <li class="list-group-item"><span class="icon-clock"></span> Круглосуточно</li>
+        </ul>
+      </div>
+      <div class="col-md-6 col-sm-12 col-xs-12">
+          <a class="dg-widget-link" href="http://2gis.ru/biysk/firm/2815278048084196/center/85.17393350601198,52.514582081587605/zoom/17?utm_medium=widget-source&utm_campaign=firmsonmap&utm_source=bigMap">Посмотреть на карте Бийска</a><div class="dg-widget-link"><a href="http://2gis.ru/biysk/firm/2815278048084196/photos/2815278048084196/center/85.17393350601198,52.514582081587605/zoom/17?utm_medium=widget-source&utm_campaign=firmsonmap&utm_source=photos">Фотографии компании</a></div><div class="dg-widget-link"><a href="http://2gis.ru/biysk/center/85.173733,52.514339/zoom/17/routeTab/rsType/bus/to/85.173733,52.514339╎SV-отель, гостиничный комплекс?utm_medium=widget-source&utm_campaign=firmsonmap&utm_source=route">Найти проезд до SV-отель, гостиничный комплекс</a></div><script charset="utf-8" src="https://widgets.2gis.com/js/DGWidgetLoader.js"></script><script charset="utf-8">new DGWidgetLoader({"width":'100%',"height":200,"borderColor":"#a3a3a3","pos":{"lat":52.514582081587605,"lon":85.17393350601198,"zoom":17},"opt":{"city":"biysk"},"org":[{"id":"2815278048084196"}]});</script><noscript style="color:#c00;font-size:16px;font-weight:bold;">Виджет карты использует JavaScript. Включите его в настройках вашего браузера.</noscript>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}
+{% block javascript %}
+{{ parent() }}
+<script src="{{ asset('bundles/hotel/fancybox/jquery.fancybox.min.js') }}"></script>
+<script type="text/javascript">
+
+  $('#mp-slider').slick();
+
+  $('#mp-carousel-slider').slick
+  ({
+    infinite: true,
+    slidesToShow: 5,
+    slidesToScroll: 2
+  });
+
+</script>
+{% endblock %}

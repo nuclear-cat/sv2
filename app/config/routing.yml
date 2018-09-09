@@ -1,0 +1,11 @@
+admin:
+    resource: "@AdminBundle/Resources/config/routing.yml"
+    prefix:   /admin
+
+image:
+    resource: "@ImageBundle/Resources/config/routing.yml"
+    prefix:   /
+
+hotel:
+    resource: "@HotelBundle/Resources/config/routing.yml"
+    prefix:   /

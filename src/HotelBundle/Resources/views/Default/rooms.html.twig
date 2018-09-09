@@ -1,0 +1,107 @@
+{% extends "@Hotel/Default/layout.html.twig" %}
+{% block stylesheet %}
+{{ parent() }}
+<style media="screen">
+
+</style>
+{% endblock %}
+{% block title %}Номера SV-отеля{% endblock %}
+{% block content %}
+<section>
+  <div class="container">
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('hotel_homepage') }}">Главная</a></li>
+        <li class="breadcrumb-item">Номера</li>
+      </ol>
+    </nav>
+
+    <h1>Номера</h1>
+    {% for room in rooms %}
+    <div class="rp-item">
+      <div class=" container">
+        <div class="rp-row row">
+          <div class="rp-row-image-container col-4">
+            <a href="{{ path('hotel_room', { 'roomId': room.id }) }}">
+            {% if room.images | length > 0 %}
+            {% set image = room.images.0.image %}
+            <div class="rp-image" style="background:url({{ image|thumbnail('preview') }}) no-repeat; {{ image.width > image.height ? 'background-size:auto 100%;background-position:center;' : 'background-size:100% auto;' }}"></div>
+            {% else %}
+            <div class="rp-image" style="background:url({{ asset('bundles/hotel/images/placeholder.png') }}) no-repeat; background-position: center; background-size:auto 100%;"></div>
+            {% endif %}
+            </a>
+          </div>
+          <div class="col-8 rp-description-container">
+            <h4><a href="{{ path('hotel_room', { 'roomId': room.id }) }}">{{ room.title }}</a></h4>
+
+            {% if room.shortText %}
+                <p>{{ room.shortText }}</p>
+            {% elseif room.text %}
+                {% set short_text = room.text | striptags | raw %}
+
+                {% if short_text | length >= 170 %}
+
+                    <p>{{ ((short_text | raw) | slice(0, 170) ~ '...')  }} <a href ="{{ path('hotel_room', {'roomId' : room.id }) }}">Читать далее.</a></p>
+                {% else %}
+
+                    <p>{{ short_text }}</p>
+
+                {% endif %}
+            {% endif %}
+
+
+
+            {% if room.priceFrom > 0 or room.priceTo > 0 %}
+
+            {% if discount > 0 %}
+            <div class="rp-price-container old">
+                <s>
+                  {% if room.priceFrom == room.priceTo %}
+                    {{ discount > 0 ? room.priceFrom : "" }}
+                  {% else %}
+                    {{ room.priceFrom > 0 ? "от " ~ room.priceFrom: "" }}
+                    {{ room.priceTo > 0 ? "до " ~ room.priceTo: "" }}
+                  {% endif %}
+                  руб.
+                </s>
+            </div>
+            {% endif %}
+
+
+            <div class="rp-price-container">
+                  {% if room.priceFrom == room.priceTo %}
+                    {{ discount > 0 ? (discount > 0 ? ((room.priceFrom - (room.priceFrom / 100 * discount))  | round) : room.priceFrom) : room.priceFrom }}
+                  {% else %}
+                    {{ room.priceFrom > 0 ? "от " ~ (discount > 0 ? (room.priceFrom - (room.priceFrom / 100 * discount)) : room.priceFrom) | round: "" }}
+                    {{ room.priceTo > 0 ? "до " ~ (discount > 0 ? (room.priceTo - (room.priceTo / 100 * discount)) : room.priceTo) | round: "" }}
+                  {% endif %}
+                руб.
+            </div>
+
+
+
+
+            {% endif %}
+
+            <div class="" style="margin-top: 20px;">
+              {% set s = false %}
+              {% if room.areaSize > 0%}{{ room.areaSize }}м²{% set s = ', ' %}{% endif %}
+              {% if room.personsNumber > 0%} {{ s ? s : '' }}до {{ room.personsNumber }}-х гостей {% set s = ', ' %}{% endif %}
+              {% if room.floor > 0 %} {{ s ? s : '' }}{{ room.floor }}-й этаж {% set s = ', ' %}{% endif %}
+            </div>
+            <div class="" style="margin-top: 20px;float:left;">
+                <button data-room-id="{{ room.id }}" data-toggle="modal" data-target="#bookModal" type="submit" class="js-book-button btn btn-primary">Забронировать</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+  </div>
+</section>
+
+{{ render(controller('HotelBundle\\Controller\\HotelController::bookRoomModalRender', { 'rooms' : rooms })) }}
+
+{% endblock %}
