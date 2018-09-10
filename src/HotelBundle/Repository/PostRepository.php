@@ -68,10 +68,15 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
           ->addSelect('p')
           ->addSelect('i')
           ->addSelect('th')
+          ->addSelect('thp')
 
           ->leftJoin('post.images', 'p')
           ->leftJoin('p.image', 'i')
-          ->leftJoin('i.thumbnails', 'th');
+          ->leftJoin('i.thumbnails', 'th')
+          ->leftJoin('th.provider', 'thp')
+
+          ->orderBy('p.roomSortOrder', 'ASC');
+
 
           if($onlyPublished)
           {

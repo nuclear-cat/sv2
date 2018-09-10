@@ -249,7 +249,6 @@ class HotelController extends Controller
 
     public function contactsAction(Request $request)
     {
-
         $form = $this->createFormBuilder()
           ->add('name', TextType::class, ['label' => 'Имя', 'required' => false  ])
           ->add('email', EmailType::class, ['label' => 'E-Mail*' ])
