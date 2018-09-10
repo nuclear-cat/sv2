@@ -79,8 +79,6 @@ class PostAdminController extends Controller
             $post->setIsPublished(true);
         }
 
-
-
         $form = $this->createFormBuilder($post)
             ->add('title', TextType::class)
             ->add('slug', TextType::class)
@@ -105,6 +103,7 @@ class PostAdminController extends Controller
             $post = $form->getData();
             $post->setDatetimeModifed(new \DateTime());
             $post->setSlug($this->slugConvert($form->getData()));
+
 
             $em->persist($post);
             $em->flush();

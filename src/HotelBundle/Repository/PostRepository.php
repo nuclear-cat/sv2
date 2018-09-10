@@ -75,7 +75,7 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
           ->leftJoin('i.thumbnails', 'th')
           ->leftJoin('th.provider', 'thp')
 
-          ->orderBy('p.roomSortOrder', 'ASC');
+          ->orderBy('p.postSortOrder', 'ASC');
 
 
           if($onlyPublished)
