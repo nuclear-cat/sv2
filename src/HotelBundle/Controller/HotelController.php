@@ -405,7 +405,7 @@ class HotelController extends Controller
         (
             $imagesQuery, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
-            50
+            30
         );
 
         return $this->render('@Hotel/Default/gallery.html.twig', [ 'pagination' => $pagination ]);
