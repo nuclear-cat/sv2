@@ -384,23 +384,31 @@ class HotelController extends Controller
 
     public function galleryAction(Request $request)
     {
-        $em       = $this->getDoctrine()->getManager();
-        $images   = $em->getRepository(Image::class)
+        $em           = $this->getDoctrine()->getManager();
+        $imagesQuery  = $em->getRepository(Image::class)
           ->createQueryBuilder('i')
           ->addSelect('p')
-          ->addSelect('r')
+        #  ->addSelect('r')
           ->addSelect('th')
           ->addSelect('thp')
 
           ->join('i.provider', 'p')
-          ->join('p.rooms', 'r')
+          #->join('p.rooms', 'r')
           ->leftJoin('i.thumbnails', 'th')
           ->leftJoin('th.provider', 'thp')
 
           ->getQuery()
           ->getResult();
 
-        return $this->render('@Hotel/Default/gallery.html.twig', ['images' => $images]);
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate
+        (
+            $imagesQuery, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            50
+        );
+
+        return $this->render('@Hotel/Default/gallery.html.twig', [ 'pagination' => $pagination ]);
 
     }
 
