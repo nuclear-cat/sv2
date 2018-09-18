@@ -73,7 +73,7 @@ class HotelController extends Controller
             ->getQuery()
             ->getResult();
 
-        $posts    = $em->getRepository(Post::class)->getPosts('health_center', true);
+        $posts    = $em->getRepository(Post::class)->getPosts('health_center', true, 3);
         $setting  = $em->getRepository(Setting::class)->getSetting();
 
         return $this->render('@Hotel/Default/index.html.twig',
