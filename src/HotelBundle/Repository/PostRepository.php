@@ -18,7 +18,7 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
     *
     * @return Post[]
     */
-    public function getPosts($categorySlug = false, $onlyPublished = true, $limit = false)
+    public function getPosts($categorySlug = false, $onlyPublished = true, $paginator = false, $page = 1, $limit = false)
     {
       $qb =  $this->createQueryBuilder('post');
 
@@ -37,6 +37,7 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
       $qb->orderBy('p.postSortOrder', 'ASC');
 
 
+
       if($onlyPublished)
       {
           $qb->andWhere('post.isPublished = 1');
@@ -49,15 +50,16 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
           $qb->setParameter('categorySlug', $categorySlug);
       }
 
-      if($limit)
+      $qb->orderBy('post.sortOrder', 'ASC');
+      $query = $qb->getQuery();
+
+      if($paginator)
       {
-          $qb->setMaxResults($limit);
+          $pagination = $paginator->paginate($query, $page, $limit);
+          return $pagination;
       }
 
-      $qb->orderBy('post.sortOrder', 'ASC');
-      $posts = $qb->getQuery()->getResult();
-
-      return $posts;
+      return $query->getResult();
 
     }
 

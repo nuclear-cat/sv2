@@ -73,8 +73,10 @@ class HotelController extends Controller
             ->getQuery()
             ->getResult();
 
-        $posts    = $em->getRepository(Post::class)->getPosts('health_center', true, 3);
-        $setting  = $em->getRepository(Setting::class)->getSetting();
+
+        $paginator  = $this->get('knp_paginator');
+        $posts      = $em->getRepository(Post::class)->getPosts('health_center', true, $paginator, 1, 3);
+        $setting    = $em->getRepository(Setting::class)->getSetting();
 
         return $this->render('@Hotel/Default/index.html.twig',
         [

@@ -47,6 +47,7 @@ class PostController extends Controller
 
     public function postsAction(Request $request, $slug = false)
     {
+
         $em         = $this->getDoctrine()->getManager();
         $category   = false;
 
