@@ -91,6 +91,7 @@ class HotelController extends Controller
 
     public function bookRoomAction(Request $request)
     {
+        #$recaptcaSecret = $this->container->getParameter('google_recaptcha_secret');
         $em = $this->getDoctrine()->getManager();
         $bookForm = $this->getBookRoomForm();
         $bookForm->handleRequest($request);
@@ -98,7 +99,6 @@ class HotelController extends Controller
 
         if($bookForm->isSubmitted() && $bookForm->isValid())
         {
-            #dump($bookForm->getData()['dateCome']); die;
             $message = (new \Swift_Message('Заявка на бронирование номера'. ($bookForm->getData()['rooms'] ? (': '.$bookForm->getData()['rooms']->getTitle()) : null)))
               ->setFrom($this->getParameter('mailer_user'))
               ->setTo($setting->getAdminEmail())
