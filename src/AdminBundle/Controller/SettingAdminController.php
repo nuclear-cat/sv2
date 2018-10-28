@@ -37,8 +37,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class SettingAdminController extends Controller
 {
-
-
     public function settingEditorAction(Request $request, $slug = 'default')
     {
         $em       = $this->getDoctrine()->getManager();

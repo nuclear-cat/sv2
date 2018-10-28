@@ -43,7 +43,7 @@
                 {% if post.isPublished %}
                 <a class="btn btn-primary" target="_blank" href="{{ path('hotel_post', {'slug': post.slug }) }}"><i class="fa fa-lg fa-eye"></i></a>
                 {% endif %}
-                
+
                 {% if not post.isSystem %}
                 <a class="btn btn-danger" onclick="return confirm('Удалить публикацию?');" href="{{ path('admin_post_remove', {'postId': post.id}) }}"><i class="fa fa-lg fa-trash"></i></a>
                 {% endif %}

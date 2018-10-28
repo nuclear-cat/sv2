@@ -1,14 +1,14 @@
 {% extends "@Admin/layout.html.twig" %}
-{% block title %}Posts{% endblock %}
+{% block title %}Rooms{% endblock %}
 {% block styles %}
 {{ parent() }}
 
 {% endblock %}
 
 {% block header_breadcrumb %}
-<li class="breadcrumb-item">Статьи</li>
+<li class="breadcrumb-item">Номера</li>
 {% endblock %}
-{% block header_title %}Список статей{% endblock %}
+{% block header_title %}Список номеров{% endblock %}
 
 {% block content %}
 <div class="col-md-12">
@@ -23,6 +23,7 @@
         <thead>
           <th>ID</th>
           <th>Заголовок</th>
+          <th>Физические номера</th>
           <th>Цена</th>
           <th>Этаж</th>
           <th>Площадь</th>
@@ -34,10 +35,26 @@
         <tbody>
         {% for room in rooms %}
         <tr class="{{ room.isPublished ? '' : 'table-secondary' }}" >
-            <td>{{ room.id }}</td>
+
+            <td r>{{ room.id }}</td>
             <td>{{ room.title }}</td>
             <td>
-                {{ room.priceFrom }}
+                <ul class="list-group">
+                    {% if room.physicalRooms | length > 0 %}
+                            {% for physicalRoom in room.physicalRooms %}
+                                <li class="list-group-item">
+                                    <a href="{{ path('admin_physical_room_editor', { 'physicalRoomId' : physicalRoom.id }) }}">{{ physicalRoom.number }}</a>
+                                    <a style="float:right;" class="text-danger text-rigth" onclick="return confirm('Удалить физический номер?');" href="{{ path('admin_physical_room_remove', { 'physicalRoomId': physicalRoom.id, 'roomId' : room.id }) }}"><i class="fa fa-lg fa-remove"></i></a>
+                                </li>
+                            {% endfor %}
+                    {% endif %}
+                      <li class="list-group-item">
+                          <a  href="{{ path('admin_physical_room_editor', { 'roomId' : room.id }) }}" ><i class="fa fa-plus"></i> Добавить физический номер</a>
+                      </li>
+                </ul>
+            </td>
+            <td>
+                {{ room.priceFrom }} -
                 {{ room.priceTo }}
             </td>
             <td>{{ room.floor }}</td>

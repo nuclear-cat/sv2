@@ -1,0 +1,74 @@
+{% extends "@Admin/layout.html.twig" %}
+{% block title %}Бронирования{% endblock %}
+{% block styles %}
+{{ parent() }}
+
+{% endblock %}
+
+{% block header_breadcrumb %}
+<li class="breadcrumb-item">Бронирования</li>
+{% endblock %}
+{% block header_title %}Список бронирований{% endblock %}
+
+{% block content %}
+<div class="col-md-12">
+  <div class="tile">
+    <div class="tile-title-w-btn">
+      <h3 class="title">Бронирования ({{ bookings | length }})</h3>
+      <p>
+          <!-- <a class="btn btn-primary icon-btn" href="{{ path('admin_room_booking_editor') }}"><i class="fa fa-plus"></i>Добавить физический номер</a> -->
+          <a class="btn btn-primary" href="{{ path('admin_room_booking_editor') }}"><i class="fa fa-plus"></i> Добавить бронирование</a>
+        </p>
+    </div>
+
+    {% if bookings and  bookings | length > 0 %}
+      <table class="table">
+          <thead>
+            <th>ID</th>
+            <th>Дата заезда</th>
+            <th>Дата выезда</th>
+            <th>Номер</th>
+            <th>Время заявки</th>
+            <th></th>
+          </thead>
+          <tbody>
+
+              {% for booking in bookings %}
+                  <tr>
+                      <td>{{ booking.id }}</td>
+                      <td>{{ booking.arrivalDate.format('d.m.Y') }}</td>
+                      <td>{{ booking.leavingDate.format('d.m.Y') }}</td>
+                      <td>
+                          {% if booking.physicalRoom %}
+                              <b>{{ booking.physicalRoom.number }}</b>
+
+                              {% if booking.physicalRoom.room %}
+
+                                - {{ booking.physicalRoom.room.title }}
+
+                              {% endif %}
+                          {% endif %}
+                      </td>
+                      <td>
+                          {% if booking.datetime %}
+
+                              {{ booking.datetime.format('d.m.Y H:i:s') }}
+
+                          {% endif %}
+                      </td>
+                      <td style="width:1%;white-space:nowrap">
+                        <div class="btn-group">
+                          <a class="btn btn-primary" href="{{ path('admin_room_booking_editor', {'bookingId': booking.id}) }}"><i class="fa fa-lg fa-edit"></i></a>
+                          <a class="btn btn-danger" onclick="return confirm('Удалить бронирование?');" href="{{ path('admin_room_booking_remove', {'bookingId': booking.id}) }}"><i class="fa fa-lg fa-trash"></i></a>
+                        </div>
+                    </td>
+                  </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+    {% else %}
+      <p>Нет бронирований</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

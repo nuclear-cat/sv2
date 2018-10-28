@@ -47,7 +47,6 @@ class PostController extends Controller
 
     public function postsAction(Request $request, $slug = false)
     {
-
         $em         = $this->getDoctrine()->getManager();
         $category   = false;
 
@@ -59,15 +58,13 @@ class PostController extends Controller
             }
             else
             {
-                throw $this->createNotFoundException('Страница не найдена');
+                throw $this->createNotFoundException('Page not found');
             }
-
         }
 
         $posts   = $em->getRepository(Post::class)->getPosts($slug);
 
         return $this->render('@Hotel/Default/posts.html.twig', [ 'posts' => $posts, 'category' => $category ]);
-
     }
 
 

@@ -18,6 +18,18 @@ hotel_room_book:
     path:     /room_book
     defaults: { _controller: HotelBundle:Hotel:bookRoom }
 
+hotel_room_booking_preview:
+    path:     /room_booking_preview
+    defaults: { _controller: HotelBundle:Booking:roomBookingPreview }
+
+hotel_room_booking_success:
+    path:     /room_booking_success/{bookingId}
+    defaults: { _controller: HotelBundle:Booking:roomBookingSuccess }
+
+hotel_room_booking:
+    path:     /room_booking/{dateCome}/{dateLeft}/{physicalRoomId}
+    defaults: { _controller: HotelBundle:Booking:roomBooking }
+
 hotel_gallery:
     path:     /gallery
     defaults: { _controller: HotelBundle:Hotel:gallery }

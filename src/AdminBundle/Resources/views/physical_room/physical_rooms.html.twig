@@ -1,0 +1,77 @@
+{% extends "@Admin/layout.html.twig" %}
+{% block title %}Physical Rooms{% endblock %}
+{% block styles %}
+{{ parent() }}
+
+{% endblock %}
+
+{% block header_breadcrumb %}
+<li class="breadcrumb-item">Статьи</li>
+{% endblock %}
+{% block header_title %}Список статей{% endblock %}
+
+{% block content %}
+<div class="col-md-12">
+  <div class="tile">
+    <div class="tile-title-w-btn">
+      <h3 class="title">Физические номера ({{ physical_rooms | length }})</h3>
+      <p>
+          <a class="btn btn-primary icon-btn" href="{{ path('admin_physical_room_editor') }}"><i class="fa fa-plus"></i>Добавить физический номер</a>
+          <a class="btn btn-primary" href="#"><i class="fa fa-plus"></i> Добавить бронирование</a>
+        </p>
+    </div>
+
+    {% if physical_rooms and physical_rooms | length > 0 %}
+    <table class="table">
+        <thead>
+          <th>ID</th>
+          <th>Номер</th>
+          <th>Этаж</th>
+        </thead>
+        <tbody>
+
+            {% for physical_room in physical_rooms %}
+                <tr>
+                    <td>{{ physical_room.id }}</td>
+                    <td>{{ physical_room.number }}</td>
+                    <td>{{ physical_room.floor }}</td>
+                    <td></td>
+
+                    <td>
+                      <div class="btn-group">
+                        <a class="btn btn-primary" href="{{ path('admin_physical_room_editor', {'physicalRoomId': physical_room.id}) }}"><i class="fa fa-lg fa-edit"></i></a>
+                        <a class="btn btn-danger" onclick="return confirm('Удалить номер?');" href="{{ path('admin_physical_room_remove', {'physicalRoomId': physical_room.id}) }}"><i class="fa fa-lg fa-trash"></i></a>
+                      </div>
+                  </td>
+
+
+                </tr>
+            {% endfor %}
+
+            {#}
+            <tr>
+                <td>1</td>
+                <td>366</td>
+                <td>Стандарт</td>
+                <td>Занято до 12.09.2018</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>362</td>
+                <td>Стандарт</td>
+                <td>Свободно</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>368</td>
+                <td>Стандарт</td>
+                <td>Занято до 17.09.2018</td>
+            </tr>#}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Нет физических номеров</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

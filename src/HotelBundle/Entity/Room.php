@@ -142,6 +142,12 @@ class Room
     private $feedbacks;
 
     /**
+     * @ORM\OneToMany(targetEntity="PhysicalRoom", mappedBy="room")
+     */
+    private $physicalRooms;
+
+
+    /**
      * Get id
      *
      * @return int
@@ -597,4 +603,54 @@ class Room
         $this->feedbacks = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+
+    /**
+     * Add physicalRoom
+     *
+     * @param \HotelBundle\Entity\PhysicalRoom $physicalRoom
+     *
+     * @return Room
+     */
+    public function addPhysicalRoom(\HotelBundle\Entity\PhysicalRoom $physicalRoom)
+    {
+        $this->physicalRooms[] = $physicalRoom;
+
+        return $this;
+    }
+
+    /**
+     * Remove physicalRoom
+     *
+     * @param \HotelBundle\Entity\PhysicalRoom $physicalRoom
+     */
+    public function removePhysicalRoom(\HotelBundle\Entity\PhysicalRoom $physicalRoom)
+    {
+        $this->physicalRooms->removeElement($physicalRoom);
+    }
+
+    /**
+     * Get physicalRooms
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPhysicalRooms()
+    {
+        return $this->physicalRooms;
+    }
+
+    public function getNotBookedPhysicalRoom()
+    {
+        if($this->getPhysicalRooms() && count($this->getPhysicalRooms()) > 0)
+        {
+            foreach($this->getPhysicalRooms() as $physicalRoom)
+            {
+                if(!$physicalRoom->getBookings()->count() > 0)
+                {
+                    return $physicalRoom;
+                }
+            }
+        }
+
+        return null;
+    }
 }

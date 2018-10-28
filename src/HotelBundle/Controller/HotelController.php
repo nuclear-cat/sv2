@@ -73,13 +73,16 @@ class HotelController extends Controller
             ->getQuery()
             ->getResult();
 
-
         $paginator  = $this->get('knp_paginator');
         $posts      = $em->getRepository(Post::class)->getPosts('health_center', true, $paginator, 1, 3);
         $setting    = $em->getRepository(Setting::class)->getSetting();
 
+        $filterForm = $this->createForm(\HotelBundle\Form\BookingFilterForm::class, null, [ 'action_url' => $this->generateUrl('hotel_room_booking_preview') ]);
+        $filterForm->handleRequest($request);
+
         return $this->render('@Hotel/Default/index.html.twig',
         [
+          'filter_form'     => $filterForm->createView(),
           'rooms'           => $rooms,
           'posts'           => $posts,
           'images'          => $images,
@@ -339,6 +342,12 @@ class HotelController extends Controller
         return $rooms;
 
     }
+
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function roomsAction(Request $request)
     {
         $em       = $this->getDoctrine()->getManager();
@@ -346,11 +355,17 @@ class HotelController extends Controller
 
         return $this->render('@Hotel/Default/rooms.html.twig',
         [
-          'rooms'    => $this->getRooms(),
+          'rooms'    =>  $this->getRooms(),
           'discount' =>  $setting->getDiscountToday()
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param $roomId
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function roomAction(Request $request, $roomId)
     {
         $em       = $this->getDoctrine()->getManager();
@@ -384,6 +399,11 @@ class HotelController extends Controller
 
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function galleryAction(Request $request)
     {
         $em           = $this->getDoctrine()->getManager();
@@ -417,11 +437,5 @@ class HotelController extends Controller
     public function postAction(Request $request, $postSlug)
     {
         return $this->render('@Hotel/Default/post.html.twig');
-
     }
-
-
-
-
-
 }

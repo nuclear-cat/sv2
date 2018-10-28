@@ -1,0 +1,23 @@
+{% if discount > 0 %}
+    <div>
+        <s>
+            {% if room_type.priceFrom == room_type.priceTo %}
+                {{ discount > 0 ? room_type.priceFrom : "" }}
+            {% else %}
+                {{ room_type.priceFrom > 0 ? "от " ~ room_type.priceFrom: "" }}
+                {{ room_type.priceTo > 0 ? "до " ~ room_type.priceTo: "" }}
+            {% endif %}
+            руб.
+        </s>
+    </div>
+{% endif %}
+
+<div>
+    {% if room_type.priceFrom == room_type.priceTo %}
+        {{ discount > 0 ? (discount > 0 ? ((room_type.priceFrom - (room_type.priceFrom / 100 * discount))  | round) : room_type.priceFrom) : room_type.priceFrom }}
+    {% else %}
+        {{ room_type.priceFrom > 0 ? "от " ~ (discount > 0 ? (room_type.priceFrom - (room_type.priceFrom / 100 * discount)) : room_type.priceFrom) | round: "" }}
+        {{ room_type.priceTo > 0 ? "до " ~ (discount > 0 ? (room_type.priceTo - (room_type.priceTo / 100 * discount)) : room_type.priceTo) | round: "" }}
+    {% endif %}
+    руб.
+</div>

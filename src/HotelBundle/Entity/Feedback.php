@@ -337,9 +337,8 @@ class Feedback
      */
     public function __construct()
     {
-        $this->room = new \Doctrine\Common\Collections\ArrayCollection();
+        #$this->room = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
 
 
     /**

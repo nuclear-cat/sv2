@@ -19,6 +19,30 @@ admin_rooms:
     path:     /rooms
     defaults: { _controller: AdminBundle:Admin:rooms }
 
+admin_physical_rooms:
+    path:     /physical_rooms
+    defaults: { _controller: AdminBundle:PhysicalRoomAdmin:physicalRooms }
+
+admin_physical_room_editor:
+    path:     /physical_room_editor/{physicalRoomId}
+    defaults: { _controller: AdminBundle:PhysicalRoomAdmin:physicalRoomEditor, physicalRoomId: null }
+
+admin_physical_room_remove:
+    path:     /physical_room_remove/{physicalRoomId}
+    defaults: { _controller: AdminBundle:PhysicalRoomAdmin:physicalRoomRemove }
+
+admin_room_bookings:
+    path:     /room_bookings
+    defaults: { _controller: AdminBundle:RoomBookingAdmin:bookings }
+
+admin_room_booking_editor:
+    path:     /room_booking_editor/{bookingId}
+    defaults: { _controller: AdminBundle:RoomBookingAdmin:bookingEditor, bookingId: null }
+
+admin_room_booking_remove:
+    path:     /room_booking_remove/{bookingId}
+    defaults: { _controller: AdminBundle:RoomBookingAdmin:bookingRemove }
+
 
 # Posts
 admin_feedbacks:

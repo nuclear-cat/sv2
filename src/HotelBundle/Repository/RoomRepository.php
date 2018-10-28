@@ -2,6 +2,8 @@
 
 namespace HotelBundle\Repository;
 
+use Doctrine\ORM\Query\Expr;
+
 /**
  * RoomRepository
  *
@@ -10,4 +12,19 @@ namespace HotelBundle\Repository;
  */
 class RoomRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getRooms($dateCome = null, $dateLeft = null)
+    {
+        $qb = $this->createQueryBuilder('r');
+        $qb->addSelect('pr');
+        $qb->addSelect('b');
+        $qb->leftJoin('r.physicalRooms', 'pr');
+        $qb->leftJoin('pr.bookings', 'b', Expr\Join::WITH, '(b.arrivalDate <= :leavingDate AND b.leavingDate >= :arrivalDate AND b.arrivalDate >= :nowDate)');
+        $qb->setParameter('arrivalDate', $dateCome);
+        $qb->setParameter('leavingDate', $dateLeft);
+        $qb->setParameter('nowDate', new \DateTime(date('Y-m-d')));
+        $qb->orderBy('r.id', 'DESC');
+        $result = $qb->getQuery()->getResult();
+
+        return $result;
+    }
 }

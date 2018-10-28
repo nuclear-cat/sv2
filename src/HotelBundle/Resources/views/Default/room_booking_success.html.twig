@@ -1,0 +1,32 @@
+{% extends "@Hotel/Default/layout.html.twig" %}
+
+{% block title %}Бронирование отправлено{% endblock %}
+{% block content %}
+<section>
+  <div class="container">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('hotel_homepage') }}">Главная</a></li>
+            <li class="breadcrumb-item">
+                <a href="{{ path('hotel_room_booking_preview') }}">Бронирование номера</a>
+            </li>
+            <li class="breadcrumb-item">Ваша заявка отправлена</li>
+          </ol>
+        </nav>
+
+      <div class="row text-center">
+            <h1>Спасибо, ваша заявка отправлена!</h1>
+      </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+
+          
+
+    </script>
+
+{% endblock %}
