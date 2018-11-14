@@ -58,7 +58,6 @@ class BookingController extends Controller
             }
         }
 
-
         $roomTypes  = $this->getDoctrine()->getRepository(\HotelBundle\Entity\Room::class)->getRooms($dateCome, $dateLeft);
         $setting    = $em->getRepository(Setting::class)->getSetting();
 

@@ -41,7 +41,6 @@ class RoomBookingAdminController extends Controller
         $bookings       = $em->getRepository(\HotelBundle\Entity\RoomBooking::class)->findBy([], [ 'id' => 'DESC']);
         $paginator      = $this->get('knp_paginator');
 
-
         return $this->render('@Admin/room_booking/bookings.html.twig', ['bookings' =>  $bookings ]);
     }
 
@@ -124,15 +123,44 @@ class RoomBookingAdminController extends Controller
     * @param Request $request
     * @param int $bookingId
     */
-    public function bookingRemoveAction(Request $request, $bookingId)
+    public function bookingRemoveAction(Request $request, $bookingId, $redirectUrl = null)
     {
         $em = $this->getDoctrine()->getManager();
         if($booking = $em->getRepository(\HotelBundle\Entity\RoomBooking::class)->findOneBy(['id' => $bookingId]))
         {
             $em->remove($booking);
             $em->flush();
-            return $this->redirectToRoute('admin_room_bookings');
         }
+
+        if($redirectUrl = $request->query->get('redirectUrl'))
+        {
+            return $this->redirect(urldecode($redirectUrl));
+        }
+        return $this->redirectToRoute('admin_room_bookings');
+    }
+
+    /**
+    * @param Request $request
+    * @param int $bookingId
+    */
+    public function bookingConfirmAction(Request $request, $bookingId, $redirectUrl = null)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        /** @var \HotelBundle\Entity\RoomBooking $booking */
+        if($booking = $em->getRepository(\HotelBundle\Entity\RoomBooking::class)->findOneBy(['id' => $bookingId]))
+        {
+            $booking->setIsConfirmed(true);
+            $em->persist($booking);
+            $em->flush();
+        }
+
+        if($redirectUrl = $request->query->get('redirectUrl'))
+        {
+            return $this->redirect(urldecode($redirectUrl));
+        }
+
+        return $this->redirectToRoute('admin_room_bookings');
     }
 
 

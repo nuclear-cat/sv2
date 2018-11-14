@@ -1,146 +1,234 @@
 {% extends "@Admin/layout.html.twig" %}
-{% block styles %}
+{% block stylesheet %}
 {{ parent() }}
 <style>
   .r-image { width:100%;height:300px; }
+
+
+      .card-columns {
+          column-count: 2 !important;
+      }
 
 </style>
 
 {% endblock %}
 {% block content %}
+
+<div class="row">
+    <div class="bs-component" style="width:100%;">
+        <div class="card">
+            <h4 class="card-header"><a href="{{path('admin_room_bookings')}}">Неподтвержденные бронирования </a></h4>
+            {% if bookings | length > 0 %}
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                        <th>Время</th>
+                        <th>Дата заезда</th>
+                        <th>Дата выезда</th>
+                        <th>Имя</th>
+                        <th>Телефон</th>
+                        <th>Физический номер</th>
+                        <th></th>
+                        </thead>
+                        <tbody>
+                        {% for booking in bookings %}
+                            <tr>
+                                <td>{{ booking.datetime | date("d.m.Y") }}</td>
+                                <td>{{ booking.arrivalDate | date("d.m.Y") }}</td>
+                                <td>{{ booking.leavingDate | date("d.m.Y") }}</td>
+                                <td>{{ booking.name }}</td>
+                                <td>{{ booking.phone }}</td>
+                                <td>
+                                    {% if booking.physicalRoom %}
+                                        <a target="_blank" href="{{ path('admin_physical_room_editor', { 'physicalRoomId' : booking.physicalRoom.id }) }}">{{ booking.physicalRoom.number }}</a>
+                                        {% if booking.physicalRoom %}
+                                            (<a href="{{ path('admin_room_editor', { 'roomId' : booking.physicalRoom.room.id }) }}">{{ booking.physicalRoom.room.title }}</a>)
+                                        {% endif %}
+                                    {% else %}
+                                        Не указан
+                                    {% endif %}
+                                </td>
+                                <td style="width:1%;white-space:nowrap">
+                                    <div class="btn-group">
+                                        <a class="btn btn-primary" href="{{ path('admin_room_booking_confirm', { 'bookingId' : booking.id, 'redirectUrl' : path('admin_index') | url_encode }) }}"><i class="fa fa-lg fa-check"></i>Подтвердить</a>
+                                        <a class="btn btn-primary" href="{{ path('admin_room_booking_editor', { 'bookingId' : booking.id }) }}"><i class="fa fa-lg fa-edit"></i></a>
+                                        <a class="btn btn-danger" onclick="return confirm('Удалить бронирование?');" href="{{ path('admin_room_booking_remove', { 'bookingId' : booking.id, 'redirectUrl' : path('admin_index') | url_encode }) }}"><i class="fa fa-lg fa-trash"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="">Нет новых бронирований</p>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+<br/>
+
 <div class="row">
 
 
-  <div class="col-md-12">
-      <div class="tile">
 
-          <h3><i class="fa fa-comments"></i> <a href="{{path('admin_feedbacks')}}">Новые сообщения </a>({{ feedbacksCount }})</h3>
-          {% if feedbacks | length > 0 %}
-          <table class="table">
-              <thead>
-                <th>Время</th>
-                <th>Имя</th>
-                <th>Телефон</th>
-                <th>E-Mail</th>
-                <th>Номер</th>
-                <th></th>
-              </thead>
-              <tbody>
-                  {% for feedback in feedbacks %}
-                  <tr>
-                      <td>{{ feedback.datetime | date("d.m.Y") }}</td>
-                      <td>{{ feedback.name }}</td>
-                      <td>{{ feedback.phone }}</td>
-                      <td>{{ feedback.email }}</td>
-                      <td>
-                          {% if feedback.room %}
-                              <a target="_blank" href="{{ path('hotel_room', { 'roomId' : feedback.room.id }) }}">{{ feedback.room.title }}</a>
-                          {% else %}
-                            Не указан
-                          {% endif %}
-                      </td>
-                      <td> <a href="{{ path('admin_feedback', {'feedbackId' : feedback.id }) }}"> <i class="fa fa-eye"></i> </a> </td>
-                  </tr>
-                  {% endfor %}
-              </tbody>
-          </table>
-          {% else %}
-          <p class="">Нет новых сообщений</p>
-          {% endif %}
-      </div>
-  </div>
+
+    <div style="width: 100%;" class="card-columns">
 
 
 
-  <div class="col-md-6">
-      <div class="tile">
-            <h3><i class="fa fa-home"></i> <a href="{{path('admin_rooms')}}">Номера</a> ({{ roomsCount }})</h3>
-            <p><a href="{{ path('admin_room_create') }}" >+ Добавить</a></p>
-            <h5>Последние измененные</h5>
-            {% if rooms | length > 0 %}
-            <div class="row">
-                {% for room in rooms %}
-                    <div class="col-4 text-center">
-                      {% if room.images | length > 0 %}
-                      {% set image = room.images.0.image %}
-                      <div class="r-image" style="height:200px;background:url({{ image|thumbnail('preview') }}) no-repeat; {{ image.width > image.height ? 'background-size:100% auto;background-position:center;' : 'background-size:100% auto;' }}"></div>
-                      {% else %}
-                      <div class="r-image" style="height:200px;background:url({{ asset('bundles/hotel/images/placeholder.png') }}) no-repeat; background-position: center; background-size:auto 100%;"></div>
-                      {% endif %}
 
-
-                      <p>
-                        {{ room.title }}
-                        <a href="{{ path('admin_room_editor', {'roomId': room.id }) }}"><i class="fa fa-edit" ></i></a>
-                        <a href="{{ path('hotel_room', {'roomId': room.id }) }}"><i class="fa fa-eye" ></i></a>
-                      </p>
-
-
-                    </div>
-
-                {% endfor %}
-            </div>
-            {% endif %}
-
-      </div>
-  </div>
-
-  <div class="col-md-6">
-      <div class="tile">
-
-          <h3><i class="fa fa-camera-retro"></i> <a href="{{path('admin_images')}}">Фотографии</a> ({{ imagesCount }})</h3>
-          {% if rooms | length > 0 %}
-          <h5>Последние загруженные</h5>
-          <div class="row">
-              {% for image in images %}
-              <div class="col-4">
-                  <a target="_blank" href="{{ image.publicSrc }}">
-                      <div class="r-image" style="height:200px;background:url({{ image|thumbnail('preview') }}) no-repeat; {{ image.width > image.height ? 'background-size:auto 100%;background-position:center;' : 'background-size:100% auto;' }}"></div>
-                  </a>
-              </div>
-              {% endfor %}
+        <div class="bs-component">
+            <div class="card">
+              <h4 class="card-header"><i class="fa fa-comments"></i> <a href="{{path('admin_feedbacks')}}">Новые сообщения </a>({{ feedbacksCount }})</h4>
+              {% if feedbacks | length > 0 %}
+                  <div class="card-body">
+                      <table class="table">
+                          <thead>
+                            <th>Время</th>
+                            <th>Имя</th>
+                            <th>Телефон</th>
+                            <th>E-Mail</th>
+                            <th>Номер</th>
+                            <th></th>
+                          </thead>
+                          <tbody>
+                              {% for feedback in feedbacks %}
+                              <tr>
+                                  <td>{{ feedback.datetime | date("d.m.Y") }}</td>
+                                  <td>{{ feedback.name }}</td>
+                                  <td>{{ feedback.phone }}</td>
+                                  <td>{{ feedback.email }}</td>
+                                  <td>
+                                      {% if feedback.room %}
+                                          <a target="_blank" href="{{ path('hotel_room', { 'roomId' : feedback.room.id }) }}">{{ feedback.room.title }}</a>
+                                      {% else %}
+                                        Не указан
+                                      {% endif %}
+                                  </td>
+                                  <td> <a href="{{ path('admin_feedback', {'feedbackId' : feedback.id }) }}"> <i class="fa fa-eye"></i> </a> </td>
+                              </tr>
+                              {% endfor %}
+                          </tbody>
+                      </table>
+                  </div>
+              {% else %}
+              <p class="">Нет новых сообщений</p>
+              {% endif %}
           </div>
-          {% endif %}
-      </div>
-  </div>
+        </div>
 
 
-  <div class="col-md-12">
-      <div class="tile">
-            <h3><i class="fa fa-home"></i> <a href="{{path('admin_posts')}}">Публикации</a> ({{ postsCount }})</h3>
-            {% if posts | length > 0 %}
-            <table class="table">
-                <thead>
-                  <th>Последнее изменение</th>
-                  <th>Заголовок</th>
-                  <th>Опубликовано</th>
-                  <th></th>
 
-                </thead>
-                <tbody>
-                    {% for post in posts %}
-                    <tr>
-                        <td>{{ post.datetimeModifed | date("d.m.Y H:i:s") }}</td>
-                        <td>{{ post.title }}</td>
-                        <td>{{ post.isPublished ? "Да" : "Нет" }}</td>
-                        <td>
-                            <div class="btn-group">
-                                <a class="btn btn-primary" href="{{ path('admin_post_editor', {'postId': post.id}) }}"><i class="fa fa-lg fa-edit"></i></a>
-                                <a class="btn btn-primary" target="_blank" href="{{ path('hotel_post', {'slug': post.slug }) }}"><i class="fa fa-lg fa-eye"></i></a>
-                            </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <p class=""> <a href="{{ path('admin_posts') }}">Все публикации</a> </p>
+        <div class="bs-component">
+            <div class="card">
+                <h4 class="card-header">Последние измененные</h4>
 
-            {% else %}
-            <p class="">Нет публикаций</p>
-            {% endif %}
+                <div class="card-body">
+                    <p><a href="{{ path('admin_room_create') }}" >+ Добавить</a></p>
+                    {% if rooms | length > 0 %}
+                        <div class="row">
+                            {% for room in rooms %}
+                                <div class="col-4 text-center">
+                                    {% if room.images | length > 0 %}
+                                        {% set image = room.images.0.image %}
+                                        <div class="r-image" style="height:200px;background:url({{ image|thumbnail('preview') }}) no-repeat; {{ image.width > image.height ? 'background-size:100% auto;background-position:center;' : 'background-size:100% auto;' }}"></div>
+                                    {% else %}
+                                        <div class="r-image" style="height:200px;background:url({{ asset('bundles/hotel/images/placeholder.png') }}) no-repeat; background-position: center; background-size:auto 100%;"></div>
+                                    {% endif %}
 
-      </div>
- </div>
+
+                                    <p>
+                                        {{ room.title }}
+                                        <a href="{{ path('admin_room_editor', {'roomId': room.id }) }}"><i class="fa fa-edit" ></i></a>
+                                        <a href="{{ path('hotel_room', {'roomId': room.id }) }}"><i class="fa fa-eye" ></i></a>
+                                    </p>
+
+
+                                </div>
+
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+
+        <div class="bs-component">
+            <div class="card">
+                <h4 class="card-header">Последние загруженные</h4>
+
+                <div class="card-body">
+                    {% if rooms | length > 0 %}
+                        <div class="row">
+                            {% for image in images %}
+                                <div class="col-4">
+                                    <a target="_blank" href="{{ image.publicSrc }}">
+                                        <div class="r-image" style="height:200px;background:url({{ image|thumbnail('preview') }}) no-repeat; {{ image.width > image.height ? 'background-size:auto 100%;background-position:center;' : 'background-size:100% auto;' }}"></div>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="bs-component">
+            <div class="card">
+                <h4 class="card-header"><a href="{{path('admin_posts')}}">Публикации</a> ({{ postsCount }})</h4>
+
+                <div class="card-body">
+                    {% if posts | length > 0 %}
+                        <table class="table">
+                            <thead>
+                            <th>Последнее изменение</th>
+                            <th>Заголовок</th>
+                            <th>Опубликовано</th>
+                            <th></th>
+
+                            </thead>
+                            <tbody>
+                            {% for post in posts %}
+                                <tr>
+                                    <td>{{ post.datetimeModifed | date("d.m.Y H:i:s") }}</td>
+                                    <td>{{ post.title }}</td>
+                                    <td>{{ post.isPublished ? "Да" : "Нет" }}</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a class="btn btn-primary" href="{{ path('admin_post_editor', {'postId': post.id}) }}"><i class="fa fa-lg fa-edit"></i></a>
+                                            <a class="btn btn-primary" target="_blank" href="{{ path('hotel_post', {'slug': post.slug }) }}"><i class="fa fa-lg fa-eye"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <p class=""> <a href="{{ path('admin_posts') }}">Все публикации</a> </p>
+
+                    {% else %}
+                        <p class="">Нет публикаций</p>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+
+
+
+
+
 
 
 </div>

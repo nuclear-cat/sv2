@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Controller;
 
+use HotelBundle\Entity\RoomBooking;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use HotelBundle\Entity\Room;
 use HotelBundle\Entity\Post;
@@ -83,6 +84,16 @@ class AdminController extends Controller
             ->setMaxResults(500)
             ->getResult();
 
+
+        $bookings  =
+            $em->getRepository(RoomBooking::class)
+            ->createQueryBuilder('rb')
+            ->orderBy('rb.id', 'DESC')
+            ->where('rb.isConfirmed IS NULL OR rb.isConfirmed = 0')
+            ->getQuery()
+            ->setMaxResults(500)
+            ->getResult();
+
         $qb->select('distinct count(distinct feedback.id)');
         $qb->from('HotelBundle:Feedback', 'feedback');
         $qb->where('feedback.isReaded IS null OR feedback.isReaded = 0');
@@ -104,6 +115,7 @@ class AdminController extends Controller
         return $this->render('@Admin/index.html.twig',
         [
           'roomsCount'      => $roomsCount,
+          'bookings'        => $bookings,
           'rooms'           => $rooms,
           'imagesCount'     => $imagesCount,
           'images'          => $images,

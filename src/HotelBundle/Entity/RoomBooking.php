@@ -78,6 +78,13 @@ class RoomBooking
     private $isReaded;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_confirmed", type="boolean", nullable=true)
+     */
+    private $isConfirmed;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="comment", type="text", nullable=true)
@@ -323,5 +330,26 @@ class RoomBooking
     {
         return $this->phone;
     }
+
+    /**
+     * @return boolean
+     */
+    public function getIsConfirmed()
+    {
+        return $this->isConfirmed;
+    }
+
+    /**
+     * @param bool $isConfirmed
+     *
+     * @return Feedback
+     */
+    public function setIsConfirmed($isConfirmed)
+    {
+        $this->isConfirmed = $isConfirmed;
+
+        return $this;
+    }
+
 
 }

@@ -27,8 +27,11 @@
             <th>ID</th>
             <th>Дата заезда</th>
             <th>Дата выезда</th>
+            <th>Имя</th>
+            <th>Телефон</th>
             <th>Номер</th>
             <th>Время заявки</th>
+            <th>Подтверждено</th>
             <th></th>
           </thead>
           <tbody>
@@ -38,6 +41,8 @@
                       <td>{{ booking.id }}</td>
                       <td>{{ booking.arrivalDate.format('d.m.Y') }}</td>
                       <td>{{ booking.leavingDate.format('d.m.Y') }}</td>
+                      <td>{{ booking.name}}</td>
+                      <td>{{ booking.phone}}</td>
                       <td>
                           {% if booking.physicalRoom %}
                               <b>{{ booking.physicalRoom.number }}</b>
@@ -56,6 +61,7 @@
 
                           {% endif %}
                       </td>
+                      <td>{{ booking.isConfirmed ? 'Да' : 'Нет' }}</td>
                       <td style="width:1%;white-space:nowrap">
                         <div class="btn-group">
                           <a class="btn btn-primary" href="{{ path('admin_room_booking_editor', {'bookingId': booking.id}) }}"><i class="fa fa-lg fa-edit"></i></a>

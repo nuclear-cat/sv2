@@ -43,6 +43,10 @@ admin_room_booking_remove:
     path:     /room_booking_remove/{bookingId}
     defaults: { _controller: AdminBundle:RoomBookingAdmin:bookingRemove }
 
+admin_room_booking_confirm:
+    path:     /room_booking_remove/{bookingId}
+    defaults: { _controller: AdminBundle:RoomBookingAdmin:bookingConfirm }
+
 
 # Posts
 admin_feedbacks:
