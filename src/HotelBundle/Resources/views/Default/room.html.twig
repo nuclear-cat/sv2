@@ -108,7 +108,7 @@
             {% if room.text %}
             <div class="col-12">
               <h3>Описание</h3>
-              {{ room.text }}
+              {{ room.text | nl2br }}
             </div>
             {% endif %}
 
