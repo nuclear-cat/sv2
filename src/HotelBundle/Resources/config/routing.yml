@@ -62,3 +62,8 @@ hotel_reviews:
     path:     /reviews
     defaults:
         _controller: HotelBundle:Review:reviews
+
+hotel_sitemap:
+    path: sitemap.xml
+    defaults:
+        _controller: HotelBundle:SiteMap:siteMap
