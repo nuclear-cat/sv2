@@ -2,7 +2,11 @@
 <html lang="ru">
 <head>
     <meta charset="utf-8">
-    <title>{% block title %}SV-отель{% endblock %}</title>
+    {% set title_block = block('title') %}
+    <title>
+        {% if title_block is not empty %}
+            {{ title_block ~ ' | ' }}
+        {% endif %}Снять гостиницу город Бийск, SV-Hotel – официальный сайт</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('bundles/hotel/favicon/apple-icon-57x57.png') }}">
     <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('bundles/hotel/favicon/apple-icon-60x60.png') }}">
@@ -21,6 +25,7 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="{{ asset('bundles/hotel/favicon/ms-icon-144x144.png') }}">
     <meta name="theme-color" content="#ffffff">
+    <meta name="yandex-verification" content="b985c304863c68a5" />
 
     {% block stylesheet %}
     <!-- <link rel="stylesheet" href="{{ asset("bundles/hotel/css/bootstrap.min.css") }}" /> -->
