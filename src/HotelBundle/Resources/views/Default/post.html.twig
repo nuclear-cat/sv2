@@ -9,6 +9,7 @@
 </style>
 {% endblock %}
 
+{% block title %}{{  post.metaTitle ?  post.title : (post.title ? post.title : parent()) }}{% endblock %}
 
 {% block content %}
 
