@@ -36,7 +36,7 @@
             <h4><a href="{{ path('hotel_room', { 'roomId': room.id }) }}">{{ room.title }}</a></h4>
 
             {% if room.shortText %}
-                <p>{{ room.shortText }}</p>
+                <p>{{ room.shortText | nl2br }}</p>
             {% elseif room.text %}
                 {% set short_text = room.text | striptags | raw %}
 

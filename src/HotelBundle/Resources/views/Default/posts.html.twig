@@ -45,7 +45,7 @@
             <h4><a href="{{ path('hotel_post', { 'slug': post.slug }) }}">{{ post.title }}</a></h4>
 
             {% if post.shortText %}
-                <p>{{ post.shortText }}</p>
+                <p>{{ post.shortText | nl2br }}</p>
             {% elseif post.text %}
                 {% set short_text = post.text | striptags | raw %}
 
