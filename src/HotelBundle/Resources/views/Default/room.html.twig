@@ -7,6 +7,15 @@
   </style>
 {% endblock %}
 {% block title %}{{ room.metaTitle ? room.metaTitle : room.title }}{% endblock %}
+`
+{% if room.metaKeywords %}
+    {% block meta_keywords %}{{ room.metaKeywords }}{% endblock %}
+{% endif %}
+
+{% if room.metaDescription %}
+    {% block meta_description %}{{ room.metaDescription }}{% endblock %}
+{% endif %}
+
 {% block content %}
 <section class="bg-1">
     <div class="container">
