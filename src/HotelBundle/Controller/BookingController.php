@@ -84,7 +84,7 @@ class BookingController extends Controller
         try
         {
             $dateCome = new \DateTime(date($dateCome));
-            $dateLeft = (new \DateTime(date($dateLeft)))->modify('+ 1 day');
+            $dateLeft = (new \DateTime(date($dateLeft)));
         }
         catch (\Exception $e)
         {
