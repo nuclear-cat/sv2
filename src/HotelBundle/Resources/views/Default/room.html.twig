@@ -37,18 +37,17 @@
                 {% if room.images | length > 0 %}
                 <div class="slider slider-for">
                     {% for image in room.images %}
-                    <div>
-                        <a data-fancybox="gallery"  class="" href="{{ image.image|thumbnail('big') }}">
-                            <div style="width:100%;height:300px;background:url({{ image.image|thumbnail('big') }}) no-repeat;{{ image.image.width > image.image.height ? 'background-size:100% auto;background-position:center;' : 'background-size:100% auto;' }}"></div>
-                        </a>
-                    </div>
-
+                        <div>
+                            <a data-fancybox="gallery"  class="" href="{{ image.image|thumbnail('big') }}">
+                                <div style="width:100%;height:300px;background:url({{  image.image.publicSrc | imagine_filter('pp_big')  }}) no-repeat;{{ image.image.width > image.image.height ? 'background-size:100% auto;background-position:center;' : 'background-size:100% auto;' }}"></div>
+                            </a>
+                        </div>
                     {% endfor %}
                 </div>
                 <div class="slider slider-nav">
                     {% for image in room.images %}
                     <div>
-                          <div style="height:100px;background:url({{ image.image|thumbnail('preview') }}) no-repeat;  {{ image.image.width > image.image.height ? 'background-size:auto 100%; background-position:center;' : 'background-size:100% auto;' }} "></div>
+                          <div style="height:100px;background:url({{ image.image.publicSrc | imagine_filter('pp_small') }}) no-repeat;  {{ image.image.width > image.image.height ? 'background-size:auto 100%; background-position:center;' : 'background-size:100% auto;' }} "></div>
                     </div>
                     {% endfor %}
                 </div>

@@ -36,8 +36,8 @@
             <div class="slider slider-for">
                 {% for image in post.images %}
                 <div data-image-provider-id="{{ image.id }}">
-                    <a data-fancybox="gallery"  href="{{ image.image|thumbnail('big') }}">
-                      <div style="width:100%;height:500px;background:url({{ image.image|thumbnail('big') }}) no-repeat;{{ image.image.width > image.image.height ? 'background-size:100% auto;background-position:center;' : 'background-size:100% auto;' }}"></div>
+                    <a data-fancybox="gallery"  href="{{ image.image.publicSrc | imagine_filter('pp_big')  }}">
+                      <div style="width:100%;height:500px;background:url({{ image.image.publicSrc | imagine_filter('pp_big')  }}) no-repeat;{{ image.image.width > image.image.height ? 'background-size:100% auto;background-position:center;' : 'background-size:100% auto;' }}"></div>
                     </a>
                 </div>
                 {% endfor %}
@@ -46,13 +46,13 @@
             <div class="slider slider-nav">
                 {% for image in post.images %}
                 <div data-image-provider-id="{{ image.id }}" >
-                      <div style="height:100px;background:url({{ image.image|thumbnail('preview') }}) no-repeat;  {{ image.image.width > image.image.height ? 'background-size:auto 100%; background-position:center;' : 'background-size:100% auto;' }} "></div>
+                      <div style="height:100px;background:url({{ image.image.publicSrc | imagine_filter('pp_small') }}) no-repeat;  {{ image.image.width > image.image.height ? 'background-size:auto 100%; background-position:center;' : 'background-size:100% auto;' }} "></div>
                 </div>
                 {% endfor %}
             </div>
             {% else %}
             <div>
-                <div style="width:100%;height:300px;background:url({{ post.images.0.image|thumbnail('big') }}) no-repeat;{{ post.images.0.image.width > post.images.0.image.height ? 'background-size:100% auto;background-position:center;' : 'background-size:100% auto;' }}"></div>
+                <div style="width:100%;height:300px;background:url({{ post.images.0.image.publicSrc | imagine_filter('pp_big') }}) no-repeat;{{ post.images.0.image.width > post.images.0.image.height ? 'background-size:100% auto;background-position:center;' : 'background-size:100% auto;' }}"></div>
             </div>
             {% endif %}
         </div>

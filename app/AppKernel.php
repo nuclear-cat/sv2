@@ -11,6 +11,7 @@ class AppKernel extends Kernel
         $bundles = [
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\SecurityBundle\SecurityBundle(),
+            new Liip\ImagineBundle\LiipImagineBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
@@ -20,25 +21,6 @@ class AppKernel extends Kernel
             new ImageBundle\ImageBundle(),
             new AdminBundle\AdminBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
-
-            // new Sonata\CoreBundle\SonataCoreBundle(),
-            // new Sonata\BlockBundle\SonataBlockBundle(),
-            // new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            // new Sonata\AdminBundle\SonataAdminBundle(),
-            // new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
-            // new Sonata\FormatterBundle\SonataFormatterBundle(),
-            // new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
-            // new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
-            //
-            //
-            // new Sonata\MediaBundle\SonataMediaBundle(),
-            // new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
-            // new JMS\SerializerBundle\JMSSerializerBundle(),
-            // new Application\Sonata\MediaBundle\ApplicationSonataMediaBundle(),
-            //
-            //
-            // //new Sonata\CoreBundle\SonataCoreBundle(),
-            // new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
 
         ];
 

@@ -49,6 +49,7 @@ return array(
     'Negotiation\\' => array($vendorDir . '/willdurand/negotiation/src/Negotiation'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'Michelf\\' => array($vendorDir . '/michelf/php-markdown/Michelf'),
+    'Liip\\ImagineBundle\\' => array($vendorDir . '/liip/imagine-bundle'),
     'Knp\\Menu\\' => array($vendorDir . '/knplabs/knp-menu/src/Knp/Menu'),
     'Knp\\Bundle\\PaginatorBundle\\' => array($vendorDir . '/knplabs/knp-paginator-bundle'),
     'Knp\\Bundle\\MenuBundle\\' => array($vendorDir . '/knplabs/knp-menu-bundle/src'),

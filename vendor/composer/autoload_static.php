@@ -82,6 +82,10 @@ class ComposerStaticInitc88857855b98408104dbdd3483b2c6a8
             'Monolog\\' => 8,
             'Michelf\\' => 8,
         ),
+        'L' => 
+        array (
+            'Liip\\ImagineBundle\\' => 19,
+        ),
         'K' => 
         array (
             'Knp\\Menu\\' => 9,
@@ -315,6 +319,10 @@ class ComposerStaticInitc88857855b98408104dbdd3483b2c6a8
         'Michelf\\' => 
         array (
             0 => __DIR__ . '/..' . '/michelf/php-markdown/Michelf',
+        ),
+        'Liip\\ImagineBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/liip/imagine-bundle',
         ),
         'Knp\\Menu\\' => 
         array (

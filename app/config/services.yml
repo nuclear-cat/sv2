@@ -56,6 +56,20 @@ services:
         tags:
             - { name: twig.extension }
 
+#    liip_imagine:
+#        resolvers:
+#            default:
+#                web_path: ~
+#        filter_sets:
+#            cache: ~
+#            cp_categrory_image:
+#              quality: 90
+#              filters:
+#                  upscale:
+#                      min: [ 360, 234 ]
+#                  thumbnail:
+#                      size: [360, 234 ]
+#                      mode: outbound
 
     image_uploader:
         public: true
