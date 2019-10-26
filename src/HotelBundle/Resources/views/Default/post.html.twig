@@ -36,8 +36,8 @@
             <div class="slider slider-for">
                 {% for image in post.images %}
                 <div data-image-provider-id="{{ image.id }}">
-                    <a data-fancybox="gallery"  href="{{ image.image.publicSrc | imagine_filter('pp_big')  }}">
-                      <div style="width:100%;height:500px;background:url({{ image.image.publicSrc | imagine_filter('pp_big')  }}) no-repeat;{{ image.image.width > image.image.height ? 'background-size:100% auto;background-position:center;' : 'background-size:100% auto;' }}"></div>
+                    <a data-fancybox="gallery"  href="{{ image.image.publicSrc | imagine_filter('pp_big') }}">
+                        <img src="{{ image.image.publicSrc | imagine_filter('pp_small') }}" data-lazy="{{ image.image.publicSrc | imagine_filter('pp_big')  }}">
                     </a>
                 </div>
                 {% endfor %}
@@ -87,6 +87,7 @@
       slidesToScroll: 1,
       arrows: false,
       fade: true,
+      lazyLoad: 'ondemand',
       asNavFor: '.slider-nav'
   });
 
