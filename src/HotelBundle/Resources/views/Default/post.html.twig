@@ -37,7 +37,7 @@
                 {% for image in post.images %}
                 <div data-image-provider-id="{{ image.id }}">
                     <a data-fancybox="gallery"  href="{{ image.image.publicSrc | imagine_filter('pp_big') }}">
-                        <img src="{{ image.image.publicSrc | imagine_filter('pp_small') }}" data-lazy="{{ image.image.publicSrc | imagine_filter('pp_big')  }}">
+                        <img width="100%" src="{{ image.image.publicSrc | imagine_filter('pp_small') }}" data-lazy="{{ image.image.publicSrc | imagine_filter('pp_big')  }}">
                     </a>
                 </div>
                 {% endfor %}
