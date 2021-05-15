@@ -61,7 +61,7 @@
                         <small>{{ room_type.text }}</small>
                     {% endif %}
                 </div>
-                <div  class="col-md-2 col-sm-12 col-xs-12" style="width:1%;white-space:nowrap">
+                <div  class="col-md-2 col-sm-12 col-xs-12">
                     {% if discount > 0 %}
                         <div class="rp-price-container old">
                             <s>
@@ -87,7 +87,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-2 col-sm-12 col-xs-12" style="width:1%;white-space:nowrap">
+                <div class="col-md-2 col-sm-12 col-xs-12">
                     {% set physicalRoom = room_type.getNotBookedPhysicalRoom %}
                     {% if physicalRoom %}
                         <a href="{{ path('hotel_room_booking', { 'dateCome' : date_come.format('Y-m-d'), 'dateLeft' : date_left.format('Y-m-d'),  'physicalRoomId' : physicalRoom.id }) }}"
