@@ -48,7 +48,7 @@
                     {% if room_type.images | length > 0 %}
                         {% set image = room_type.images.0.image %}
                         <div class="rp-image"
-                             style="width:230px; height:150px;background:url({{ image|thumbnail('preview') }}) no-repeat; {{ image.width > image.height ? 'background-size:auto 100%;background-position:center;' : 'background-size:100% auto;' }}"></div>
+                             style="width:100%; background:url({{ image|thumbnail('preview') }}) no-repeat; {{ image.width > image.height ? 'background-size:auto 100%;background-position:center;' : 'background-size:100% auto;' }}"></div>
                     {% else %}
                         <div class="rp-image"
                              style="width:230px; height:150px;background:url({{ asset('bundles/hotel/images/placeholder.png') }}) no-repeat; background-position: center; background-size:auto 100%;"></div>
@@ -61,7 +61,7 @@
                         <small>{{ room_type.text }}</small>
                     {% endif %}
                 </div>
-                <div  class="col-md-2 col-sm-6 col-xs-6" style="width:1%;white-space:nowrap">
+                <div  class="col-md-2 col-sm-12 col-xs-12" style="width:1%;white-space:nowrap">
                     {% if discount > 0 %}
                         <div class="rp-price-container old">
                             <s>
@@ -87,7 +87,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-2 col-sm-6 col-xs-6" style="width:1%;white-space:nowrap">
+                <div class="col-md-2 col-sm-12 col-xs-12" style="width:1%;white-space:nowrap">
                     {% set physicalRoom = room_type.getNotBookedPhysicalRoom %}
                     {% if physicalRoom %}
                         <a href="{{ path('hotel_room_booking', { 'dateCome' : date_come.format('Y-m-d'), 'dateLeft' : date_left.format('Y-m-d'),  'physicalRoomId' : physicalRoom.id }) }}"
