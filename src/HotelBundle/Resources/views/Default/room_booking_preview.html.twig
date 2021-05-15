@@ -41,97 +41,64 @@
     {{ form_end(filter_form) }}
     <p>Выбрано с {{ date_come.format('d.m.Y') }} до {{ date_left.format('d.m.Y') }}</p>
     {% if room_types and room_types | length > 0 %}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Тип размещения</th>
-                    <th>Цена</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for room_type in room_types %}
-                    <tr>
-                        <td>
-                            {% if room_type.images | length > 0 %}
-                                {% set image = room_type.images.0.image %}
-                                <div class="rp-image" style="width:230px; height:150px;background:url({{ image|thumbnail('preview') }}) no-repeat; {{ image.width > image.height ? 'background-size:auto 100%;background-position:center;' : 'background-size:100% auto;' }}"></div>
-                            {% else %}
-                                <div class="rp-image" style="width:230px; height:150px;background:url({{ asset('bundles/hotel/images/placeholder.png') }}) no-repeat; background-position: center; background-size:auto 100%;"></div>
-                            {% endif %}
-                        </td>
-                        <td>
-                            <h5>{{ room_type.title }}</h5>
-                            {% if room_type.text %}
-                                <small>{{ room_type.text  }}</small>
-                            {% endif %}
-                        </td>
-                        <td  style="width:1%;white-space:nowrap" >
-                            {% if discount > 0 %}
-                                <div class="rp-price-container old">
-                                    <s>
-                                        {% if room_type.priceFrom == room_type.priceTo %}
-                                            {{ discount > 0 ? room_type.priceFrom : "" }}
-                                        {% else %}
-                                            {{ room_type.priceFrom > 0 ? "от " ~ room_type.priceFrom: "" }}
-                                            {{ room_type.priceTo > 0 ? "до " ~ room_type.priceTo: "" }}
-                                        {% endif %}
-                                        руб.
-                                    </s>
-                                </div>
-                            {% endif %}
+        {% for room_type in room_types %}
+            <div class="row">
 
+                <div class="col-md-3">
+                    {% if room_type.images | length > 0 %}
+                        {% set image = room_type.images.0.image %}
+                        <div class="rp-image"
+                             style="width:230px; height:150px;background:url({{ image|thumbnail('preview') }}) no-repeat; {{ image.width > image.height ? 'background-size:auto 100%;background-position:center;' : 'background-size:100% auto;' }}"></div>
+                    {% else %}
+                        <div class="rp-image"
+                             style="width:230px; height:150px;background:url({{ asset('bundles/hotel/images/placeholder.png') }}) no-repeat; background-position: center; background-size:auto 100%;"></div>
+                    {% endif %}
+                </div>
 
-                            <div class="rp-price-container">
+                <div class="col-md-6">
+                    <h5>{{ room_type.title }}</h5>
+                    {% if room_type.text %}
+                        <small>{{ room_type.text }}</small>
+                    {% endif %}
+                </div>
+
+                <div  class="col-md-1" style="width:1%;white-space:nowrap">
+                    {% if discount > 0 %}
+                        <div class="rp-price-container old">
+                            <s>
                                 {% if room_type.priceFrom == room_type.priceTo %}
-                                    {{ discount > 0 ? (discount > 0 ? ((room_type.priceFrom - (room_type.priceFrom / 100 * discount))  | round) : room_type.priceFrom) : room_type.priceFrom }}
+                                    {{ discount > 0 ? room_type.priceFrom : "" }}
                                 {% else %}
-                                    {{ room_type.priceFrom > 0 ? "от " ~ (discount > 0 ? (room_type.priceFrom - (room_type.priceFrom / 100 * discount)) : room_type.priceFrom) | round: "" }}
-                                    {{ room_type.priceTo > 0 ? "до " ~ (discount > 0 ? (room_type.priceTo - (room_type.priceTo / 100 * discount)) : room_type.priceTo) | round: "" }}
+                                    {{ room_type.priceFrom > 0 ? "от " ~ room_type.priceFrom: "" }}
+                                    {{ room_type.priceTo > 0 ? "до " ~ room_type.priceTo: "" }}
                                 {% endif %}
                                 руб.
-                            </div>
-                        </td>
+                            </s>
+                        </div>
+                    {% endif %}
 
-                        {#<td>#}
-                            {#{% if room_type.physicalRooms and room_type.physicalRooms | length > 0 %}#}
-                                {#<ul>#}
-                                  {#{% for physical_room in room_type.physicalRooms %}#}
-                                          {#<li href="#">{{ physical_room.number }}#}
-                                              {#{% if physical_room.bookings | length > 0 %}#}
-                                                  {#<ul>#}
-                                                      {#{% for booking in physical_room.bookings  %}#}
+                    <div class="rp-price-container">
+                        {% if room_type.priceFrom == room_type.priceTo %}
+                            {{ discount > 0 ? (discount > 0 ? ((room_type.priceFrom - (room_type.priceFrom / 100 * discount))  | round) : room_type.priceFrom) : room_type.priceFrom }}
+                        {% else %}
+                            {{ room_type.priceFrom > 0 ? "от " ~ (discount > 0 ? (room_type.priceFrom - (room_type.priceFrom / 100 * discount)) : room_type.priceFrom) | round: "" }}
+                            {{ room_type.priceTo > 0 ? "до " ~ (discount > 0 ? (room_type.priceTo - (room_type.priceTo / 100 * discount)) : room_type.priceTo) | round: "" }}
+                        {% endif %}
+                        руб.
+                    </div>
+                </div>
 
-                                                          {#<li>{{ booking.arrivalDate.format('d.m.Y') }} --- {{ booking.leavingDate.format('d.m.Y') }}</li>#}
-
-                                                      {#{% endfor %}#}
-                                                  {#</ul>#}
-                                              {#{% endif %}#}
-                                          {#</li>#}
-                                  {#{% endfor %}#}
-                                {#</ul>#}
-                            {#{% endif %}#}
-                        {#</td>#}
-                        <td style="width:1%;white-space:nowrap" >
-                            {% set physicalRoom = room_type.getNotBookedPhysicalRoom %}
-                            {% if physicalRoom %}
-
-                                <a href="{{ path('hotel_room_booking', { 'dateCome' : date_come.format('Y-m-d'), 'dateLeft' : date_left.format('Y-m-d'),  'physicalRoomId' : physicalRoom.id }) }}" style="color:#fff;" class="btn btn-primary" >Забронировать</a>
-
-                            {% else %}
-
-                                <button type="button" class="btn btn-default" disabled name="button">Забронировать</button>
-
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-
-
-
-            </tbody>
-        </table>
+                <div class="col-md-2" style="width:1%;white-space:nowrap">
+                    {% set physicalRoom = room_type.getNotBookedPhysicalRoom %}
+                    {% if physicalRoom %}
+                        <a href="{{ path('hotel_room_booking', { 'dateCome' : date_come.format('Y-m-d'), 'dateLeft' : date_left.format('Y-m-d'),  'physicalRoomId' : physicalRoom.id }) }}"
+                           style="color:#fff;" class="btn btn-primary">Забронировать</a>
+                    {% else %}
+                        <button type="button" class="btn btn-default" disabled name="button">Забронировать</button>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
     {% endif %}
   </div>
 </section>
